@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Services - ILYOX</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      overflow-x: hidden;
+    }
+    header {
+      padding: 2rem;
+      text-align: center;
+      background: #161b22;
+      box-shadow: 0 0 10px #58a6ff;
+    }
+    h1 {
+      font-size: 2.5rem;
+      color: #58a6ff;
+    }
+    nav {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    nav a {
+      color: #58a6ff;
+      margin: 0 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      padding: 2rem;
+    }
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      width: 300px;
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px #58a6ff77;
+    }
+    .price {
+      font-weight: bold;
+      color: #3fb950;
+    }
+    button {
+      background: #238636;
+      color: white;
+      border: none;
+      padding: 0.7rem 1.5rem;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2ea043;
+    }
+    .form-section {
+      background: #0d1117;
+      padding: 2rem;
+      max-width: 600px;
+      margin: auto;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    input, textarea, select {
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      border-radius: 0.5rem;
+      border: 1px solid #30363d;
+      background: #161b22;
+      color: #c9d1d9;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: #8b949e;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Mes Services Professionnels</h1>
+    <nav>
+      <a href="./index.html">Retour</a>
+      <a href="./servicepay.html">Services</a>
+      <a href="assistance.html">Assistance & Factures</a>
+    </nav>
+  </header>
+
+  <section class="services">
+    <div class="card">
+      <h2>Développement</h2>
+      <p class="price">À partir de 10€</p>
+    </div>
+    <div class="card">
+      <h2>Création de serveur Discord</h2>
+      <p class="price">À partir de 12.99€</p>
+    </div>
+    <div class="card">
+      <h2>Gestion serveur Discord</h2>
+      <p class="price">3.50€/mois</p>
+    </div>
+    <div class="card">
+      <h2>Dépannage informatique</h2>
+      <p class="price">15€</p>
+    </div>
+    <div class="card">
+      <h2>Dépannage réseau</h2>
+      <p class="price">15€</p>
+    </div>
+    <div class="card">
+      <h2>Installation OS ou PC</h2>
+      <p class="price">10€</p>
+    </div>
+    <div class="card">
+      <h2>Gestion infrastructure entreprise</h2>
+      <p class="price">50€/mois</p>
+    </div>
+  </section>
+
+  <section class="form-section">
+    <h2>Commander un service</h2>
+    <form id="orderForm">
+      <input type="text" name="nom" placeholder="Nom complet" required>
+      <input type="email" name="email" placeholder="Adresse e-mail" required>
+      <input type="text" name="discord" placeholder="Pseudo Discord" required>
+      <select name="service" required>
+        <option value="">Choisir un service</option>
+        <option>Développement</option>
+        <option>Création de serveur Discord</option>
+        <option>Gestion serveur Discord</option>
+        <option>Dépannage informatique</option>
+        <option>Dépannage réseau</option>
+        <option>Installation OS ou PC</option>
+        <option>Gestion infrastructure entreprise</option>
+      </select>
+      <textarea name="details" placeholder="Détails spécifiques de la commande" rows="4" required></textarea>
+      <button type="submit">Envoyer la commande</button>
+    </form>
+  </section>
+
+  <footer>
+    Dans les "détails" merci d'indiquer le type de paiement par mis ces 3 ( Paypal / Stripe sachant que celle ci va direct dans l'asso/ sinon par bien ( discord nitro/etc)
+    <br>
+   
+            © 2025 ILYOX — Tous droits réservés.
+  </footer>
+
+  <script>
+    const webhookURL = 'https://discord.com/api/webhooks/1358868593240182864/e8uKLGZ6GirMfzzPJDIP0MHRx29ysq8XEDxUagkNGb17QRzHGaxxZNVdbxDfRk6MbxfL';
+
+    document.getElementById('orderForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = new FormData(this);
+      const content = `**Nouvelle commande :**\nNom : ${data.get('nom')}\nEmail : ${data.get('email')}\nDiscord : ${data.get('discord')}\nService : ${data.get('service')}\nDétails : ${data.get('details')}`;
+
+      await fetch(webhookURL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content })
+      });
+
+      alert("Commande envoyée ! Merci.");
+      this.reset();
+    });
+  </script>
+</body>
+</html>
